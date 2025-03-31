@@ -26,17 +26,24 @@ class NewVisitorTest(unittest.TestCase):
         inputbox.send_keys('Buy flowers')
         #回车后页面更新
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
+        time.sleep(2)
         #待办列表中新增1. Buy flowers
         table=self.browser.find_element(By.ID,'id_list_table')
         rows=table.find_elements(By.TAG_NAME,'tr')
         self.assertIn('1. Buy flowers',[row.text for row in rows])
-        #继续输入文本"Send a gift to Lisi"
-
+        #继续输入文本"Give a gift to Lisi"
+        inputbox=self.browser.find_element(By.ID,'id_new_item')
+        inputbox.send_keys('Give a gift to Lisi')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(2)
         #页面更新
         #新增列表
-
-        #网站为代办生成唯一的URL
+        table=self.browser.find_element(By.ID,'id_list_table')
+        rows=table.find_elements(By.TAG_NAME,'tr')
+        self.assertIn('1. Buy flowers',[row.text for row in rows])
+        self.assertIn('2. Give a gift to Lisi',[row.text for row in rows])
+        
+        #网站为待办生成唯一的URL
 
         #访问URL，发现待办事项列表仍在
         #离开
