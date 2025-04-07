@@ -3,7 +3,8 @@ from selenium.webdriver.common.keys import Keys
 import unittest
 import time
 from selenium.webdriver.common.by import By
-class NewVisitorTest(unittest.TestCase):
+from django.test import LiveServerTestCase
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         #return super().setUp()
         self.browser=webdriver.Chrome()
@@ -15,7 +16,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn(row_text,[row.text for row in rows])
     def test_case(self):
         #打开网页
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         #检查标题是否有如下的内容
         self.assertIn('To-Do',self.browser.title,f"browser title was: {self.browser.title}")
         #检查头部包含'To-Do'
@@ -50,8 +51,8 @@ class NewVisitorTest(unittest.TestCase):
         self.fail('Finish the test!')
 
 
-if __name__=='__main__':
-    unittest.main()
+#if __name__=='__main__':
+#    unittest.main()
 #browser=webdriver.Chrome()
 #browser.get('http://localhost:8000')
 
