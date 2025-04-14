@@ -66,6 +66,42 @@ class NewVisitorTest(LiveServerTestCase):
         #离开
         self.fail('Finish the test!')
 
+    def test_multiple_users(self):
+        #张三新建一个待办事项清单
+        self.browser.get(self.live_server_url)
+        inputbox=self.browser.find_element(By.ID,'id_new_item')
+        inputbox.send_keys('Buy flowers')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1. Buy flowers')
+        #张三注意到清单有一个唯一的URL
+        zhangsan_list_url=self.browser.current_url
+        self.assertRegex(zhangsan_list_url,'/lists/.+')
+        
+        #新用户王五访问网站
+        #使用新浏览器会话
+        #确保张三的信息不会从cookie中泄露
+        self.browser.quit()
+        self.browser=webdriver.Chrome()
+        #王五访问首页
+        #首页中不会呈现张三的清单
+        self.browser.get(self.live_server_url)
+        page_text=self.browser.find_element(By.TAG_NAME,'body').text
+        self.assertNotIn('Buy flowers',page_text)
+        #self.assertNotIn('BGive agift to Lisa',page_text)
+        #王五输入新待办事项，新建清单
+        inputbox=self.browser.find_element(By.ID,'id_new_item')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+        self.wait_for_row_in_list_table('1. Buy milk')
+        #王五获得了他唯一的URL
+        wangwu_list_url=self.browser.current_url
+        self.assertRegex(wangwu_list_url,'/lists/.+')
+        self.assertNotEqual(wangwu_list_url,zhangsan_list_url)
+        #该页面仍然无张三的清单
+        page_text=self.browser.find_element(By.TAG_NAME,'body').text
+        self.assertNotIn('Buy flowers',page_text)
+        self.assertIn('Buy milk',page_text)
+        #二人意满离，然后去睡觉了
 
 #if __name__=='__main__':
 #    unittest.main()
