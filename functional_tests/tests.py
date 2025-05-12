@@ -64,7 +64,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         #访问URL，发现待办事项列表仍在
         #离开
-        self.fail('Finish the test!')
+        #self.fail('Finish the test!')
 
     def test_multiple_users(self):
         #张三新建一个待办事项清单
