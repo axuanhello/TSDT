@@ -69,13 +69,13 @@ class ListViewTest(TestCase):
         self.assertContains(response,'itemey 2')
 class NewListTest(TestCase):
     def test_can_save_a_POST_request(self):
-        response=self.client.post('/',data={'item_text':'A new list item'})
+        response=self.client.post('/lists/new',data={'item_text':'A new list item'})
         #检查数据库中是否存储
         self.assertEqual(Item.objects.count(),1)
         new_item=Item.objects.first()
         self.assertEqual(new_item.text,'A new list item')
     def test_redirects_after_POST(self):
-        response=self.client.post('/',data={'item_text':'A new list item'})
+        response=self.client.post('/lists/new',data={'item_text':'A new list item'})
         #self.assertIn('A new list item',response.content.decode())
         #self.assertTemplateUsed(response,'home.html')
         #self.assertEqual(response.status_code,302)
