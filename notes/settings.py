@@ -70,7 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'notes.wsgi.application'
 
-
+CSRF_TRUSTED_ORIGINS=['http://49.232.65.129']
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 import os
